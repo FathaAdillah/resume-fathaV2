@@ -81,13 +81,13 @@ export default function Navbar() {
           </div>
 
           {/* Login button */}
-          <Link
+          {/* <Link
             to="/login"
             className="hidden md:flex items-center gap-1.5 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold px-4 py-1.5 rounded-xl transition-colors"
           >
             <LogIn size={14} />
             Login
-          </Link>
+          </Link> */}
 
           {/* Mobile toggle */}
           <button
@@ -130,13 +130,13 @@ export default function Navbar() {
             })}
 
             {/* Mobile Login */}
-            <Link
+            {/* <Link
               to="/login"
               className="flex items-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors mt-1"
             >
               <LogIn size={15} />
               Login to Admin
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}
