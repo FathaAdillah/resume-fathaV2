@@ -129,10 +129,10 @@ function ExpCard({ exp }: { exp: (typeof experiences)[0] }) {
 
       {/* Achievements */}
       {exp.achievements.length > 0 && (
-        <div className="bg-amber-50 border border-amber-100 rounded-xl p-3">
+        <div className="bg-green-50 border border-green-100 rounded-xl p-3">
           <div className="flex items-center gap-1.5 mb-2">
-            <Trophy size={12} className="text-amber-500" />
-            <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wide">
+            <Trophy size={12} className="text-green-500" />
+            <span className="text-[11px] font-bold text-green-700 uppercase tracking-wide">
               Key Achievements
             </span>
           </div>
@@ -140,9 +140,9 @@ function ExpCard({ exp }: { exp: (typeof experiences)[0] }) {
             {exp.achievements.map((a, j) => (
               <li
                 key={j}
-                className="text-xs text-amber-800 flex items-start gap-1.5"
+                className="text-xs text-green-800 flex items-start gap-1.5"
               >
-                <span className="text-amber-400 shrink-0">•</span>
+                <span className="text-green-400 shrink-0">•</span>
                 {a}
               </li>
             ))}
