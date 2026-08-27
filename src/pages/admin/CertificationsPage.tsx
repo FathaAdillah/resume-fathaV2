@@ -404,8 +404,10 @@ export default function CertificationsPage() {
                 Cancel
               </button>
               <button
-                onClick={() => deleteMutation.mutate(deleteId)}
-                disabled={deleteMutation.isPending}
+                onClick={() => {
+                  if (deleteId != null) deleteMutation.mutate(deleteId);
+                }}
+                disabled={deleteId == null || deleteMutation.isPending}
                 className="px-4 py-2 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
               >
                 {deleteMutation.isPending ? "Deleting..." : "Delete"}
