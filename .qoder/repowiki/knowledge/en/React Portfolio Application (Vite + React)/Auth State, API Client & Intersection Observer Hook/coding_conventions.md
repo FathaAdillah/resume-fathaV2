@@ -1,0 +1,3 @@
+- State access inside interceptors uses `useAuthStore.getState()` rather than calling the hook directly, keeping non-component code compatible with Zustand's rules.
+- Authentication is centralized: tokens are attached automatically via an Axios request interceptor and cleared on 401 responses through a shared response interceptor.
+- React hooks return a tuple of `{ ref, state }` (e.g. `{ ref, inView }`) so consumers can attach the ref and consume the derived boolean state together.

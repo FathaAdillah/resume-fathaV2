@@ -1,0 +1,1 @@
+The app expects a DOM element with id `root` to exist before `createRoot` is called; no additional build or env setup is required beyond standard Vite/React tooling.

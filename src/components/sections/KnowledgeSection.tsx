@@ -8,7 +8,7 @@
   Globe,
   type LucideIcon,
 } from "lucide-react";
-import { knowledge } from "../../data/resume";
+import { useKnowledge } from "../../hooks/useResumeApi";
 import { useInView } from "../../hooks/useInView";
 
 const knowledgeIconMap: Record<string, LucideIcon> = {
@@ -50,6 +50,7 @@ const knowledgeDesc: Record<string, string> = {
 
 export default function KnowledgeSection() {
   const { ref, inView } = useInView();
+  const { data: knowledge = [] } = useKnowledge();
 
   return (
     <section id="knowledge" className="py-24 bg-gray-50/60">

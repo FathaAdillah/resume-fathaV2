@@ -1,0 +1,5 @@
+- Components are exported as default function components returning JSX with Tailwind utility classes rather than CSS modules or styled-components.
+- Icons are imported individually from `lucide-react` and rendered inline with explicit `size` props instead of using icon wrappers.
+- Form inputs follow a consistent pattern: controlled `useState` fields, `required` attributes, rounded borders with `focus:ring-2 focus:ring-blue-500` styling, and placeholder text matching the field type.
+- Navigation links use hash anchors (`#hero`, `#about`, etc.) and smooth-scroll into view via `document.querySelector(...).scrollIntoView({ behavior: 'smooth' })` rather than React Router links.
+- External social links consistently use `target="_blank"` paired with `rel="noopener noreferrer"` for security.

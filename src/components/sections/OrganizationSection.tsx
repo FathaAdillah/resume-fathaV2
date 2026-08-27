@@ -1,8 +1,10 @@
-import { organizations } from "../../data/resume";
+import { useOrganizations } from "../../hooks/useResumeApi";
+import type { OrganizationItem } from "../../hooks/useResumeApi";
 import { useInView } from "../../hooks/useInView";
 
 export default function OrganizationSection() {
   const { ref, inView } = useInView();
+  const { data: organizations = [] } = useOrganizations();
 
   return (
     <section id="organization" className="py-24 bg-white">
@@ -30,13 +32,7 @@ export default function OrganizationSection() {
   );
 }
 
-function OrgCard({
-  org,
-  index,
-}: {
-  org: (typeof organizations)[0];
-  index: number;
-}) {
+function OrgCard({ org, index }: { org: OrganizationItem; index: number }) {
   const { ref, inView } = useInView();
 
   return (
@@ -71,4 +67,3 @@ function OrgCard({
     </div>
   );
 }
-

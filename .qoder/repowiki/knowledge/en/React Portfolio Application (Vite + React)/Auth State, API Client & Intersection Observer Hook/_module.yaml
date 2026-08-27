@@ -1,0 +1,12 @@
+schema_version: 1
+module_path: state_and_services
+title: Auth State, API Client & Intersection Observer Hook
+scope:
+    - src/store/authStore.ts
+    - src/services/api.ts
+    - src/hooks/useInView.ts
+source_files: []
+depends_on: []
+related_to:
+    - path: public_pages
+    - path: routing_and_app

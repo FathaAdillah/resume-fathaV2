@@ -1,0 +1,4 @@
+- Route definitions are declared as a static array passed to `createBrowserRouter`, with nested children arrays for layout-based sub-routes (e.g., `/admin`).
+- Authentication gating is implemented via a small `ProtectedRoute` component that reads token state from the Zustand store `useAuthStore` and redirects unauthenticated users with `<Navigate>`.
+- Providers (React StrictMode, QueryClientProvider) are composed at the very top of the tree in `main.tsx`, keeping routing and page logic provider-agnostic.
+- Public-facing sections are composed directly in `App.tsx` as sibling components under a single `<main>`, while routed admin pages live under separate `pages/admin/*` modules.

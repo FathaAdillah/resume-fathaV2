@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Award, CheckCircle2 } from "lucide-react";
-import { certifications, type Certification } from "../../data/resume";
+import { useCertifications } from "../../hooks/useResumeApi";
+import type { Certification } from "../../data/resume";
 import { useInView } from "../../hooks/useInView";
 import { Dialog, DialogContent } from "../ui/Dialog";
 
@@ -209,6 +210,7 @@ function CertCard({
 // ─── Main Section ──────────────────────────────────────────────────────────
 export default function CertificationSection() {
   const { ref, inView } = useInView();
+  const { data: certifications = [] } = useCertifications();
   const [currentIdx, setCurrentIdx] = useState(0);
   const [perSlide, setPerSlide] = useState(3);
   const [isPaused, setIsPaused] = useState(false);

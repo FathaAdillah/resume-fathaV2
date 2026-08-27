@@ -1,0 +1,5 @@
+Three independent, single-responsibility units with no internal dependencies among them:
+- `src/store/authStore.ts` defines a Zustand store (`useAuthStore`) with a `token` field and `setToken`/`logout` actions, wrapped with `zustand/middleware`'s `persist` using the `'auth-storage'` key so state survives page reloads.
+- `src/services/api.ts` creates a configured Axios instance (`baseURL` from `import.meta.env.VITE_API_URL`, defaulting to `/api`). A request interceptor reads the current token via `useAuthStore.getState()` and attaches it as a Bearer header; a response interceptor clears the store and redirects to `/login` on 401 errors.
+- `src/hooks/useInView.ts` is a pure React hook returning `{ ref, inView }` built on `IntersectionObserver` with a configurable `threshold` (default 0.12).
+Dependency direction: `api.ts` depends on `authStore.ts`; `useInView.ts` has no cross-module dependencies. All three are consumed by components elsewhere in the app.

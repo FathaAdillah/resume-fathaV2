@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { projects, type Project } from "../../data/resume";
+import { useProjects } from "../../hooks/useResumeApi";
+import type { Project } from "../../data/resume";
 import { useInView } from "../../hooks/useInView";
 import { Dialog, DialogContent } from "../ui/Dialog";
 
@@ -141,6 +142,7 @@ function ProjectCard({
 // ─── Main Section ──────────────────────────────────────────────────────────
 export default function ProjectsSection() {
   const { ref, inView } = useInView();
+  const { data: projects = [] } = useProjects();
   const [currentIdx, setCurrentIdx] = useState(0);
   const [perSlide, setPerSlide] = useState(3);
   const [isPaused, setIsPaused] = useState(false);

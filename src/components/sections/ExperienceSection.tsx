@@ -1,9 +1,20 @@
 import { Trophy } from "lucide-react";
-import { experiences } from "../../data/resume";
+import { useExperiences } from "../../hooks/useResumeApi";
+import type { Experience } from "../../data/resume";
 import { useInView } from "../../hooks/useInView";
 
 export default function ExperienceSection() {
   const { ref, inView } = useInView();
+  const { data: experiences = [], isLoading } = useExperiences();
+
+  if (isLoading)
+    return (
+      <section id="experience" className="py-24 bg-white">
+        <div className="text-center text-gray-300 animate-pulse">
+          Loading...
+        </div>
+      </section>
+    );
 
   return (
     <section id="experience" className="py-24 bg-white">
@@ -47,7 +58,7 @@ function TimelineItem({
   index,
   isLeft,
 }: {
-  exp: (typeof experiences)[0];
+  exp: Experience;
   index: number;
   isLeft: boolean;
 }) {
@@ -94,7 +105,7 @@ function TimelineItem({
   );
 }
 
-function ExpCard({ exp }: { exp: (typeof experiences)[0] }) {
+function ExpCard({ exp }: { exp: Experience }) {
   return (
     <div
       className={`bg-white border rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow w-full max-w-md ${

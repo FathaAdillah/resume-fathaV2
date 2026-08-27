@@ -1,0 +1,1 @@
+Vite + React + TypeScript frontend; TanStack Query for data fetching; react-router-dom for routing; Zustand for client state; Axios for HTTP; ESLint for linting; Docker/Nginx for containerized serving.

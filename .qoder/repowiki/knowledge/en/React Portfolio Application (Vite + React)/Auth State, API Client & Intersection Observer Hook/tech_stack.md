@@ -1,0 +1,1 @@
+Zustand with `persist` middleware for browser storage-backed auth state; Axios for HTTP requests with interceptors; native `IntersectionObserver` API wrapped in a React hook.

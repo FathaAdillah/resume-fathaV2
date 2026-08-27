@@ -1,0 +1,1 @@
+React functional components with hooks (`useState`, `useEffect`), React Router (`useNavigate`, `Link`) for routing, Tailwind CSS for styling, Lucide React icons, and Zustand (`useAuthStore`) for authentication state.

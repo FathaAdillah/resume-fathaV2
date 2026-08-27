@@ -1,0 +1,1 @@
+React 18 with `createRoot`, `react-router-dom` v6 (data router API via `createBrowserRouter`/`RouterProvider`), and `@tanstack/react-query` for data fetching, all mounted inside `StrictMode`.

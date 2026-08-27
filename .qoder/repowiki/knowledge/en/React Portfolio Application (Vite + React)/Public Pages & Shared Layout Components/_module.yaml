@@ -1,0 +1,13 @@
+schema_version: 1
+module_path: public_pages
+title: Public Pages & Shared Layout Components
+scope:
+    - src/pages/LandingPage.tsx
+    - src/pages/LoginPage.tsx
+    - src/components/Footer.tsx
+    - src/components/Navbar.tsx
+source_files: []
+depends_on: []
+related_to:
+    - path: routing_and_app
+    - path: state_and_services

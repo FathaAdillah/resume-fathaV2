@@ -6,6 +6,7 @@ import {
   Code2,
   Award,
   FolderOpen,
+  Mail,
   LogOut,
   Menu,
   X,
@@ -19,6 +20,7 @@ const navItems = [
   { label: "Skills", href: "/admin/skills", icon: Code2 },
   { label: "Projects", href: "/admin/projects", icon: FolderOpen },
   { label: "Certifications", href: "/admin/certifications", icon: Award },
+  { label: "Messages", href: "/admin/messages", icon: Mail },
 ];
 
 export default function AdminLayout() {

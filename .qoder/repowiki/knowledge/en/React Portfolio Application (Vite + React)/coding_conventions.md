@@ -1,0 +1,3 @@
+- TypeScript configuration is split across tsconfig.json (root), tsconfig.app.json (browser), and tsconfig.node.json (Node/tooling) following Vite's recommended separation.
+- ESLint rules are centralized in eslint.config.js and applied uniformly across all child modules.
+- Environment variables are loaded via Vite's import.meta.env pattern rather than process.env.

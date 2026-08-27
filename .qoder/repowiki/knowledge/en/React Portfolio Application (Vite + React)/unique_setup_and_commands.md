@@ -1,0 +1,1 @@
+Build is driven by Vite (npm scripts in package.json); development server runs via `npm run dev`; production build outputs to dist/ served by the Nginx image defined in Dockerfile and orchestrated through docker-compose.yml.

@@ -1,0 +1,1 @@
+Requires a `VITE_API_URL` environment variable (defaults to `/api`) so the Axios base URL resolves correctly at build time.

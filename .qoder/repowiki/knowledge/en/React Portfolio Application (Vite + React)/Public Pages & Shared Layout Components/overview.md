@@ -1,0 +1,1 @@
+Renders the public-facing portfolio landing page and admin login screen, composed from shared Navbar and Footer layout components that drive single-page scroll navigation.

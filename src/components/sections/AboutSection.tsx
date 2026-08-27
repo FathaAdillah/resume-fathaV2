@@ -1,5 +1,5 @@
 import { Zap, Users, Puzzle, BarChart2 } from "lucide-react";
-import { bio } from "../../data/resume";
+import { useProfile } from "../../hooks/useResumeApi";
 import { useInView } from "../../hooks/useInView";
 
 const strengths = [
@@ -27,6 +27,8 @@ const strengths = [
 
 export default function AboutSection() {
   const { ref, inView } = useInView();
+  const { data: profile } = useProfile();
+  const bio = profile?.bio ?? "";
 
   return (
     <section id="about" className="py-24 bg-gray-50/60">

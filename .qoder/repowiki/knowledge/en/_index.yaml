@@ -1,0 +1,71 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: en-US
+branch: main
+nodes_managed: true
+exported_at: "2026-07-27T08:54:50Z"
+modules:
+    "":
+        dir_name: React Portfolio Application (Vite + React)
+        title: React Portfolio Application (Vite + React)
+        scope:
+            - README.md
+            - package.json
+            - vite.config.ts
+            - tsconfig.json
+            - Dockerfile
+            - docker-compose.yml
+            - .gitignore
+            - .dockerignore
+            - eslint.config.js
+            - index.html
+            - package-lock.json
+            - tsconfig.app.json
+            - tsconfig.node.json
+        source_files: []
+        children:
+            - public_pages
+            - routing_and_app
+            - state_and_services
+        depends_on: []
+        related_to: []
+    public_pages:
+        dir_name: Public Pages & Shared Layout Components
+        title: Public Pages & Shared Layout Components
+        scope:
+            - src/pages/LandingPage.tsx
+            - src/pages/LoginPage.tsx
+            - src/components/Footer.tsx
+            - src/components/Navbar.tsx
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: routing_and_app
+            - path: state_and_services
+    routing_and_app:
+        dir_name: Application Bootstrap & Routing
+        title: Application Bootstrap & Routing
+        scope:
+            - src/router/index.tsx
+            - src/App.tsx
+            - src/main.tsx
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: public_pages
+            - path: state_and_services
+    state_and_services:
+        dir_name: Auth State, API Client & Intersection Observer Hook
+        title: Auth State, API Client & Intersection Observer Hook
+        scope:
+            - src/store/authStore.ts
+            - src/services/api.ts
+            - src/hooks/useInView.ts
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: public_pages
+            - path: routing_and_app

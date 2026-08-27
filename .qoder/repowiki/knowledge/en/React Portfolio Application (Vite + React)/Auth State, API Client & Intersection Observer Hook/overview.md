@@ -1,0 +1,1 @@
+Provides a persisted Zustand auth store for bearer tokens, an Axios client that injects the token and handles 401 redirects, and a reusable React hook for detecting when elements enter the viewport.

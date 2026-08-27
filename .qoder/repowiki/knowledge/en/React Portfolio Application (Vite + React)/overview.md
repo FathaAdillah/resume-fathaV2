@@ -1,0 +1,1 @@
+Top-level Vite/React project that bootstraps a single-page portfolio site with public landing/login pages, protected admin routes, and shared layout components.

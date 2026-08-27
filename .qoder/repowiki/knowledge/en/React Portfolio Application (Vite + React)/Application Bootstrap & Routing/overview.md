@@ -1,0 +1,1 @@
+Bootstraps the React application, wires up TanStack Query, and defines the react-router-dom route tree including public landing/login pages and protected admin routes guarded by an authentication store.

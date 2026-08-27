@@ -1,0 +1,12 @@
+schema_version: 1
+module_path: routing_and_app
+title: Application Bootstrap & Routing
+scope:
+    - src/router/index.tsx
+    - src/App.tsx
+    - src/main.tsx
+source_files: []
+depends_on: []
+related_to:
+    - path: public_pages
+    - path: state_and_services

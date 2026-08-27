@@ -12,6 +12,7 @@ import ExperiencePage from "../pages/admin/ExperiencePage";
 import SkillsPage from "../pages/admin/SkillsPage";
 import ProjectsPage from "../pages/admin/ProjectsPage";
 import CertificationsPage from "../pages/admin/CertificationsPage";
+import MessagesPage from "../pages/admin/MessagesPage";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token } = useAuthStore();
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
       { path: "skills", element: <SkillsPage /> },
       { path: "projects", element: <ProjectsPage /> },
       { path: "certifications", element: <CertificationsPage /> },
+      { path: "messages", element: <MessagesPage /> },
     ],
   },
 ]);

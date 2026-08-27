@@ -1,17 +1,33 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, GitFork, Link2, Send, Award } from "lucide-react";
 import { profile } from "../data/resume";
+import api from "../services/api";
+import axios from "axios";
 
 export default function Footer() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, wire this to an API endpoint
-    setSent(true);
-    setForm({ name: "", email: "", message: "" });
-    setTimeout(() => setSent(false), 4000);
+    setError("");
+    setLoading(true);
+    try {
+      await api.post("/contact", form);
+      setSent(true);
+      setForm({ name: "", email: "", message: "" });
+      setTimeout(() => setSent(false), 4000);
+    } catch (err: unknown) {
+      const msg =
+        axios.isAxiosError(err) && err.response?.data?.error
+          ? String(err.response.data.error)
+          : "Something went wrong. Please try again.";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -130,6 +146,11 @@ export default function Footer() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2.5 text-sm text-red-600">
+                    {error}
+                  </div>
+                )}
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">
                     Name
@@ -177,10 +198,11 @@ export default function Footer() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                  disabled={loading}
+                  className="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors"
                 >
                   <Send size={15} />
-                  Send Message
+                  {loading ? "Sending..." : "Send Message"}
                 </button>
               </form>
             )}

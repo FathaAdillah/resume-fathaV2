@@ -1,0 +1,1 @@
+No special build or setup steps — these are standard React/Vite components consumed by the app's router. The login flow currently uses a hardcoded credential check (`admin@fatha.dev` / `admin123`) with a dummy token before being wired to a real API endpoint.

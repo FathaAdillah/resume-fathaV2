@@ -1,16 +1,11 @@
 ﻿import { useState } from "react";
 import { GraduationCap, Users, CalendarDays, Award } from "lucide-react";
-import { education, organizations } from "../../data/resume";
+import { useEducation, useOrganizations } from "../../hooks/useResumeApi";
+import type { EducationItem, OrganizationItem } from "../../hooks/useResumeApi";
 import { useInView } from "../../hooks/useInView";
 
 // â”€â”€â”€ Horizontal Education Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function EduCard({
-  edu,
-  index,
-}: {
-  edu: (typeof education)[0];
-  index: number;
-}) {
+function EduCard({ edu, index }: { edu: EducationItem; index: number }) {
   const { ref, inView } = useInView();
   return (
     <div
@@ -50,13 +45,7 @@ function EduCard({
 }
 
 // â”€â”€â”€ Horizontal Organization Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function OrgCard({
-  org,
-  index,
-}: {
-  org: (typeof organizations)[0];
-  index: number;
-}) {
+function OrgCard({ org, index }: { org: OrganizationItem; index: number }) {
   const { ref, inView } = useInView();
   return (
     <div
@@ -99,6 +88,8 @@ function OrgCard({
 // â”€â”€â”€ Main Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function EducationSection() {
   const { ref, inView } = useInView();
+  const { data: education = [] } = useEducation();
+  const { data: organizations = [] } = useOrganizations();
   const [activeTab, setActiveTab] = useState<"education" | "organization">(
     "education",
   );

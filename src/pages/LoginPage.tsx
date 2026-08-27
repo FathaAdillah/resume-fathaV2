@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff, LogIn, Lock, Mail } from "lucide-react";
 import { useAuthStore } from "../store/authStore";
+import api from "../services/api";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -17,17 +18,11 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      // TODO: replace with real API call
-      // const res = await api.post('/auth/login', { email, password })
-      // setToken(res.data.token)
-      if (email === "admin@fatha.dev" && password === "admin123") {
-        setToken("dummy-token");
-        navigate("/admin");
-      } else {
-        setError("Invalid email or password.");
-      }
+      const res = await api.post("/auth/login", { email, password });
+      setToken(res.data.token);
+      navigate("/admin");
     } catch {
-      setError("Login failed. Please try again.");
+      setError("Invalid email or password.");
     } finally {
       setLoading(false);
     }

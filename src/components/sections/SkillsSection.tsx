@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
-import { skills, softSkills } from "../../data/resume";
+import { useSkills, useSoftSkills } from "../../hooks/useResumeApi";
 import { useInView } from "../../hooks/useInView";
 
 const softIconMap: Record<string, LucideIcon> = {
@@ -36,27 +36,21 @@ const softIconColors: Record<string, string> = {
   "Responsibility & Ownership of Tasks": "text-emerald-600 bg-emerald-50",
 };
 
-const hardSkillCategories: { label: string; items: string[] }[] = [
-  { label: "Languages & Frameworks", items: Object.values(skills).flat() },
-  {
-    label: "Architecture & Methodology",
-    items: [
-      "MVC",
-      "SDLC",
-      "Microservices",
-      "RESTful API",
-      "Agile",
-      "Waterfall",
-      "Git Workflow",
-      "Docker",
-      "Cloud Deployment",
-    ],
-  },
+const categoryColors = [
+  "border-blue-200 bg-blue-50 text-blue-700",
+  "border-violet-200 bg-violet-50 text-violet-700",
+  "border-cyan-200 bg-cyan-50 text-cyan-700",
+  "border-amber-200 bg-amber-50 text-amber-700",
+  "border-emerald-200 bg-emerald-50 text-emerald-700",
 ];
 
 export default function SkillsSection() {
   const { ref, inView } = useInView();
   const [activeTab, setActiveTab] = useState<"hard" | "soft">("hard");
+  const { data: skills = {} } = useSkills();
+  const { data: softSkills = [] } = useSoftSkills();
+
+  const skillEntries = Object.entries(skills);
 
   return (
     <section id="skills" className="py-24 bg-white">
@@ -91,15 +85,16 @@ export default function SkillsSection() {
           </div>
         </div>
 
-        {/* Hard Skills panel */}
+        {/* Hard Skills panel — rendered from DB categories */}
         {activeTab === "hard" && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {hardSkillCategories.map((group, i) => (
-              <SkillGroup
-                key={group.label}
-                title={group.label}
-                items={group.items}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {skillEntries.map(([category, items], i) => (
+              <SkillCategoryCard
+                key={category}
+                category={category}
+                items={items}
                 index={i}
+                colorClass={categoryColors[i % categoryColors.length]}
               />
             ))}
           </div>
@@ -118,23 +113,31 @@ export default function SkillsSection() {
   );
 }
 
-function SkillGroup({
-  title,
+function SkillCategoryCard({
+  category,
   items,
   index,
+  colorClass,
 }: {
-  title: string;
+  category: string;
   items: string[];
   index: number;
+  colorClass: string;
 }) {
   const { ref, inView } = useInView();
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      className={`bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-500 ${
+        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      }`}
+      style={{ transitionDelay: `${index * 80}ms` }}
     >
-      <h3 className="text-base font-bold text-gray-900 mb-4">{title}</h3>
+      <span
+        className={`inline-block text-xs font-bold px-3 py-1 rounded-full border mb-4 ${colorClass}`}
+      >
+        {category}
+      </span>
       <div className="flex flex-wrap gap-2">
         {items.map((skill) => (
           <span
