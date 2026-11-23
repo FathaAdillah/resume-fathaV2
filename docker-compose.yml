@@ -1,3 +1,6 @@
+# Local / Dokploy (Compose) stack: Express app (API + SPA) on 3003 + MySQL 8.
+#   docker compose up -d --build   →  http://localhost:3003
+# Optional overrides via .env: MYSQL_ROOT_PASSWORD, JWT_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD
 services:
   web:
     build:
@@ -5,15 +8,39 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
-      PORT: 3003
+      NODE_ENV: production
       HOST: 0.0.0.0
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT:-3306}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME:-resume_db}
-      JWT_SECRET: ${JWT_SECRET}
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      PORT: 3003
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      DB_NAME: resume_db
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
     ports:
       - "3003:3003"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+    volumes:
+      - db_data:/var/lib/mysql
+      # Runs 001 → 003 once, only when db_data is empty
+      - ./server/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+volumes:
+  db_data:
