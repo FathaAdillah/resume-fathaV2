@@ -2,4 +2,9 @@ node_modules
 dist
 .git
 .env
+.env.*
 .github
+.kilo
+.qoder
+nginx
+*.log
