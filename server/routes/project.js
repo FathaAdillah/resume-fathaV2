@@ -9,7 +9,7 @@ router.get('/projects', async (req, res) => {
         const [projects] = await pool.query('SELECT * FROM projects ORDER BY sort_order');
         const result = await Promise.all(projects.map(async (p) => {
             const [images] = await pool.query(
-                'SELECT gradient, label FROM project_images WHERE project_id = ? ORDER BY sort_order', [p.id]
+                'SELECT gradient, label, image_url FROM project_images WHERE project_id = ? ORDER BY sort_order', [p.id]
             );
             return { ...p, images };
         }));
@@ -23,21 +23,21 @@ router.get('/projects', async (req, res) => {
 router.post('/projects', async (req, res) => {
     const conn = await pool.getConnection();
     try {
-        const { title, description, tags, gradient, icon, images = [], sort_order = 0 } = req.body;
+        const { title, description, tags, gradient, icon, images = [], links = [], sort_order = 0 } = req.body;
         await conn.beginTransaction();
         const [result] = await conn.query(
-            'INSERT INTO projects (title, description, tags, gradient, icon, sort_order) VALUES (?, ?, ?, ?, ?, ?)',
-            [title, description, JSON.stringify(tags || []), gradient, icon, sort_order]
+            'INSERT INTO projects (title, description, tags, links, gradient, icon, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [title, description, JSON.stringify(tags || []), JSON.stringify(links || []), gradient, icon, sort_order]
         );
         const projectId = result.insertId;
         for (let i = 0; i < images.length; i++) {
             await conn.query(
-                'INSERT INTO project_images (project_id, gradient, label, sort_order) VALUES (?, ?, ?, ?)',
-                [projectId, images[i].gradient, images[i].label, i + 1]
+                'INSERT INTO project_images (project_id, gradient, label, image_url, sort_order) VALUES (?, ?, ?, ?, ?)',
+                [projectId, images[i].gradient || '', images[i].label || '', images[i].image_url || null, i + 1]
             );
         }
         await conn.commit();
-        res.status(201).json({ id: projectId, title, description, tags, gradient, icon, images, sort_order });
+        res.status(201).json({ id: projectId, title, description, tags, links, gradient, icon, images, sort_order });
     } catch (err) {
         await conn.rollback();
         res.status(500).json({ error: err.message });
@@ -50,22 +50,22 @@ router.post('/projects', async (req, res) => {
 router.put('/projects/:id', async (req, res) => {
     const conn = await pool.getConnection();
     try {
-        const { title, description, tags, gradient, icon, images = [], sort_order } = req.body;
+        const { title, description, tags, gradient, icon, images = [], links = [], sort_order } = req.body;
         const id = req.params.id;
         await conn.beginTransaction();
         await conn.query(
-            'UPDATE projects SET title=?, description=?, tags=?, gradient=?, icon=?, sort_order=? WHERE id=?',
-            [title, description, JSON.stringify(tags || []), gradient, icon, sort_order || 0, id]
+            'UPDATE projects SET title=?, description=?, tags=?, links=?, gradient=?, icon=?, sort_order=? WHERE id=?',
+            [title, description, JSON.stringify(tags || []), JSON.stringify(links || []), gradient, icon, sort_order || 0, id]
         );
         await conn.query('DELETE FROM project_images WHERE project_id = ?', [id]);
         for (let i = 0; i < images.length; i++) {
             await conn.query(
-                'INSERT INTO project_images (project_id, gradient, label, sort_order) VALUES (?, ?, ?, ?)',
-                [id, images[i].gradient, images[i].label, i + 1]
+                'INSERT INTO project_images (project_id, gradient, label, image_url, sort_order) VALUES (?, ?, ?, ?, ?)',
+                [id, images[i].gradient || '', images[i].label || '', images[i].image_url || null, i + 1]
             );
         }
         await conn.commit();
-        res.json({ id: Number(id), title, description, tags, gradient, icon, images, sort_order });
+        res.json({ id: Number(id), title, description, tags, links, gradient, icon, images, sort_order });
     } catch (err) {
         await conn.rollback();
         res.status(500).json({ error: err.message });

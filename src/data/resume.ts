@@ -104,10 +104,16 @@ export const skills: Record<string, string[]> = {
   'Architecture': ['MVC', 'SDLC', 'Microservices', 'RESTful API'],
 }
 
-// ─── Projects (Dummy) ──────────────────────────────────────────────────────
+// ─── Projects ──────────────────────────────────────────────────────────────
 export interface ProjectImage {
   gradient: string
   label: string
+  image_url?: string | null
+}
+
+export interface ProjectLink {
+  label: string
+  url: string
 }
 
 export interface Project {
@@ -118,85 +124,26 @@ export interface Project {
   gradient: string
   icon: string
   images: ProjectImage[]
+  links?: ProjectLink[] | null
 }
 
 export const projects: Project[] = [
   {
     id: 1,
-    title: 'ERP HCM Module',
-    description: 'Enterprise Resource Planning Human Capital Management system for Pelindo holding companies. Features employee data management, payroll integration, attendance tracking, and a comprehensive reporting dashboard.',
-    tags: ['Laravel', 'Oracle SQL', 'PHP', 'REST API'],
-    gradient: 'from-blue-500 to-blue-700',
-    icon: '🏢',
+    title: 'Solitapp — Crowdfunding Platform',
+    description: 'Crowdfunding and donation platform built on a microservice architecture. A Laravel REST API powers campaigns, donors, reconciliation, Tabungan & Qurban, and distribution; Next.js serves the public donor site and the admin dashboard. Donations are processed through a payment gateway, and an LLM-powered assistant chatbot is in development.',
+    tags: ['Microservices', 'Laravel API', 'Next.js', 'Payment Gateway', 'LLM Chatbot (in development)'],
+    gradient: 'from-emerald-600 to-green-800',
+    icon: '🤲',
     images: [
-      { gradient: 'from-blue-400 to-blue-600', label: 'Dashboard Overview' },
-      { gradient: 'from-blue-500 to-indigo-600', label: 'Employee Management' },
-      { gradient: 'from-indigo-400 to-blue-600', label: 'Reports & Analytics' },
+      { gradient: 'from-emerald-500 to-green-700', label: 'Admin — Dashboard', image_url: '/images/projects/solitapp-admin-dashboard.png' },
+      { gradient: 'from-emerald-500 to-green-700', label: 'Admin — Campaigns', image_url: '/images/projects/solitapp-admin-campaigns.png' },
+      { gradient: 'from-emerald-500 to-green-700', label: 'Frontend — Home', image_url: '/images/projects/solitapp-home.png' },
+      { gradient: 'from-emerald-500 to-green-700', label: 'Frontend — Donation Programs', image_url: '/images/projects/solitapp-programs.png' },
     ],
-  },
-  {
-    id: 2,
-    title: 'E-Recruitment System',
-    description: 'Digital recruitment platform for Pelindo with job posting management, applicant tracking, automated screening features, and integration with MyPelindo Employee Administration services.',
-    tags: ['Laravel', 'MySQL', 'React', 'REST API'],
-    gradient: 'from-cyan-500 to-blue-600',
-    icon: '👥',
-    images: [
-      { gradient: 'from-cyan-400 to-blue-500', label: 'Job Listing Page' },
-      { gradient: 'from-blue-400 to-cyan-600', label: 'Applicant Tracker' },
-      { gradient: 'from-sky-400 to-blue-600', label: 'Interview Schedule' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'IoT Farm Monitoring',
-    description: 'Real-time monitoring dashboard for agricultural IoT sensors. Tracks temperature, humidity, and electrical data using MQTT protocol with Elasticsearch visualizations and alerting.',
-    tags: ['IoT', 'MQTT', 'Elasticsearch', 'Node.js'],
-    gradient: 'from-teal-500 to-blue-600',
-    icon: '🌡️',
-    images: [
-      { gradient: 'from-teal-400 to-blue-500', label: 'Sensor Dashboard' },
-      { gradient: 'from-green-400 to-teal-500', label: 'Temperature Trends' },
-      { gradient: 'from-blue-400 to-teal-600', label: 'Alert System' },
-    ],
-  },
-  {
-    id: 4,
-    title: 'Centra Pelindo ERP',
-    description: 'Full-scale ERP implementation across 6 Pelindo holding companies. Managed system migration, enterprise master data preparation, SIT, and UAT processes ensuring smooth go-live.',
-    tags: ['ERP', 'Oracle SQL', 'PostgreSQL', 'System Integration'],
-    gradient: 'from-blue-600 to-violet-600',
-    icon: '⚙️',
-    images: [
-      { gradient: 'from-blue-500 to-violet-500', label: 'Implementation Plan' },
-      { gradient: 'from-violet-400 to-blue-600', label: 'Data Migration' },
-      { gradient: 'from-blue-600 to-indigo-600', label: 'Go-Live Dashboard' },
-    ],
-  },
-  {
-    id: 5,
-    title: 'API Integration Platform',
-    description: 'Middleware platform for integrating third-party services including WHAPI and MyPelindo services. Handles authentication, rate limiting, request transformation, and monitoring.',
-    tags: ['Laravel', 'REST API', 'Docker', 'MySQL'],
-    gradient: 'from-sky-500 to-blue-700',
-    icon: '🔗',
-    images: [
-      { gradient: 'from-sky-400 to-blue-600', label: 'API Gateway' },
-      { gradient: 'from-blue-400 to-sky-600', label: 'Integration Map' },
-      { gradient: 'from-indigo-400 to-sky-500', label: 'Monitoring Panel' },
-    ],
-  },
-  {
-    id: 6,
-    title: 'IT Asset Management',
-    description: 'Internal asset tracking and management system for BRI Regional Office Surabaya. Features inventory tracking, maintenance scheduling, ticketing system, and documentation management.',
-    tags: ['PHP', 'MySQL', 'Bootstrap', 'Git'],
-    gradient: 'from-blue-500 to-sky-600',
-    icon: '💻',
-    images: [
-      { gradient: 'from-blue-400 to-indigo-500', label: 'Asset Dashboard' },
-      { gradient: 'from-sky-400 to-blue-600', label: 'Maintenance Log' },
-      { gradient: 'from-blue-500 to-cyan-500', label: 'Inventory Report' },
+    links: [
+      { label: 'Frontend', url: 'https://solitapp.my.id/' },
+      { label: 'Admin Dashboard', url: 'https://admin.solitapp.my.id/' },
     ],
   },
 ]
