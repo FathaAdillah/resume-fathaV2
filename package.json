@@ -11,7 +11,7 @@
     "start": "node server/index.js",
     "lint": "eslint .",
     "preview": "vite preview",
-    "db:migrate": "powershell -Command \"Get-Content server/migrations/001_init.sql -Raw | mysql -u root\""
+    "db:migrate": "powershell -Command \"Get-Content server/migrations/001_init.sql,server/migrations/002_contact_messages.sql,server/migrations/003_solitapp_projects.sql -Raw | mysql -u root\""
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.16",
