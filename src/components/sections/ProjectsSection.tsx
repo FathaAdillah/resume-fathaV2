@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { useProjects } from "../../hooks/useResumeApi";
 import type { Project } from "../../data/resume";
 import { useInView } from "../../hooks/useInView";
@@ -13,20 +13,33 @@ function ProjectDialogBody({ project }: { project: Project }) {
   const next = () =>
     setImgIdx((i) => (i === project.images.length - 1 ? 0 : i + 1));
 
+  const total = project.images.length;
+  const current = project.images[imgIdx];
+
   return (
     <>
       {/* Image slider */}
       <div
-        className={`relative aspect-video bg-gradient-to-br ${project.images[imgIdx].gradient} flex items-center justify-center overflow-hidden rounded-t-2xl`}
+        className={`relative aspect-video bg-gradient-to-br ${current?.gradient ?? project.gradient} flex items-center justify-center overflow-hidden rounded-t-2xl`}
       >
         {/* Slide visual */}
-        <div className="text-center select-none">
-          <div className="text-8xl mb-4">{project.icon}</div>
-          <p className="text-white/80 font-medium text-sm px-8">
-            {project.images[imgIdx].label}
-          </p>
-        </div>
+        {current?.image_url ? (
+          <img
+            src={current.image_url}
+            alt={`${project.title} — ${current.label}`}
+            className="absolute inset-0 w-full h-full object-contain bg-gray-50"
+          />
+        ) : (
+          <div className="text-center select-none">
+            <div className="text-8xl mb-4">{project.icon}</div>
+            <p className="text-white/80 font-medium text-sm px-8">
+              {current?.label}
+            </p>
+          </div>
+        )}
 
+        {total > 1 && (
+          <>
         {/* Prev */}
         <button
           onClick={prev}
@@ -42,6 +55,8 @@ function ProjectDialogBody({ project }: { project: Project }) {
         >
           <ChevronRight size={18} />
         </button>
+          </>
+        )}
 
         {/* Dot indicators */}
         <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
@@ -49,14 +64,15 @@ function ProjectDialogBody({ project }: { project: Project }) {
             <button
               key={i}
               onClick={() => setImgIdx(i)}
-              className={`h-1.5 rounded-full transition-all ${i === imgIdx ? "w-5 bg-white" : "w-1.5 bg-white/40"}`}
+              className={`h-1.5 rounded-full transition-all shadow ${i === imgIdx ? "w-5 bg-blue-700" : "w-1.5 bg-gray-400/70"}`}
             />
           ))}
         </div>
 
         {/* Counter */}
         <div className="absolute top-3 left-4 bg-black/30 text-white text-xs px-2 py-0.5 rounded-full">
-          {imgIdx + 1} / {project.images.length}
+          {total ? imgIdx + 1 : 0} / {total}
+          {current?.label ? ` · ${current.label}` : ""}
         </div>
       </div>
 
@@ -78,6 +94,21 @@ function ProjectDialogBody({ project }: { project: Project }) {
             </span>
           ))}
         </div>
+        {!!project.links?.length && (
+          <div className="flex flex-wrap gap-4 mt-4">
+            {project.links.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:text-blue-900"
+              >
+                {link.label} <ExternalLink size={14} />
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
@@ -91,6 +122,8 @@ function ProjectCard({
   project: Project;
   onClick: () => void;
 }) {
+  const cover = project.images.find((img) => img.image_url)?.image_url;
+
   return (
     <div
       className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
@@ -100,9 +133,17 @@ function ProjectCard({
       <div
         className={`aspect-video bg-gradient-to-br ${project.gradient} flex items-center justify-center relative overflow-hidden`}
       >
-        <div className="text-7xl select-none group-hover:scale-110 transition-transform duration-300">
-          {project.icon}
-        </div>
+        {cover ? (
+          <img
+            src={cover}
+            alt={project.title}
+            className="absolute inset-0 w-full h-full object-cover object-left-top group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="text-7xl select-none group-hover:scale-110 transition-transform duration-300">
+            {project.icon}
+          </div>
+        )}
         {/* Overlay on hover */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
           <span className="opacity-0 group-hover:opacity-100 text-white text-xs font-semibold bg-black/40 px-3 py-1.5 rounded-full transition-opacity">
@@ -204,17 +245,19 @@ export default function ProjectsSection() {
           onMouseLeave={() => setIsPaused(false)}
         >
           {/* Prev button */}
+          {maxIdx > 0 && (
           <button
             onClick={prev}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-9 h-9 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center text-gray-600 hover:bg-blue-700 hover:text-white hover:border-blue-700 transition-all"
           >
             <ChevronLeft size={16} />
           </button>
+          )}
 
           {/* Sliding cards */}
           <div className="overflow-hidden rounded-xl">
             <div
-              className="flex"
+              className={`flex ${total < perSlide ? "justify-center" : ""}`}
               style={{
                 transform: `translateX(${translatePct}%)`,
                 transition:
@@ -224,7 +267,7 @@ export default function ProjectsSection() {
               {projects.map((project) => (
                 <div
                   key={project.id}
-                  style={{ minWidth: `${100 / perSlide}%` }}
+                  style={{ flex: `0 0 ${100 / perSlide}%` }}
                   className="px-2"
                 >
                   <ProjectCard
@@ -237,17 +280,19 @@ export default function ProjectsSection() {
           </div>
 
           {/* Next button */}
+          {maxIdx > 0 && (
           <button
             onClick={next}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-9 h-9 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center text-gray-600 hover:bg-blue-700 hover:text-white hover:border-blue-700 transition-all"
           >
             <ChevronRight size={16} />
           </button>
+          )}
         </div>
 
         {/* Dot indicators */}
         <div className="flex justify-center gap-2 mt-6">
-          {Array.from({ length: maxIdx + 1 }).map((_, i) => (
+          {maxIdx > 0 && Array.from({ length: maxIdx + 1 }).map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentIdx(i)}

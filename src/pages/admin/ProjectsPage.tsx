@@ -7,6 +7,11 @@ import api from "../../services/api";
 interface ProjectImage {
   gradient: string;
   label: string;
+  image_url?: string | null;
+}
+interface ProjectLink {
+  label: string;
+  url: string;
 }
 interface ProjectData {
   id?: number;
@@ -16,6 +21,7 @@ interface ProjectData {
   gradient: string;
   icon: string;
   images: ProjectImage[];
+  links?: ProjectLink[] | null;
 }
 
 const emptyProject: ProjectData = {
@@ -25,6 +31,7 @@ const emptyProject: ProjectData = {
   gradient: "from-blue-500 to-blue-700",
   icon: "",
   images: [],
+  links: [],
 };
 
 export default function ProjectsPage() {
@@ -65,7 +72,7 @@ export default function ProjectsPage() {
     setDialogOpen(true);
   };
   const openEdit = (p: ProjectData & { id: number }) => {
-    setForm(p);
+    setForm({ ...p, links: p.links || [] });
     setTagsInput((p.tags || []).join(", "));
     setDialogOpen(true);
   };
@@ -235,6 +242,16 @@ export default function ProjectsPage() {
                     placeholder="Label"
                     className="flex-1 px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
+                  <input
+                    value={img.image_url || ""}
+                    onChange={(e) => {
+                      const imgs = [...form.images];
+                      imgs[i] = { ...imgs[i], image_url: e.target.value };
+                      setForm({ ...form, images: imgs });
+                    }}
+                    placeholder="Image URL (/images/projects/x.png)"
+                    className="flex-[2] px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                   {form.images.length > 0 && (
                     <button
                       onClick={() =>
@@ -254,12 +271,69 @@ export default function ProjectsPage() {
                 onClick={() =>
                   setForm({
                     ...form,
-                    images: [...form.images, { gradient: "", label: "" }],
+                    images: [
+                      ...form.images,
+                      { gradient: "", label: "", image_url: "" },
+                    ],
                   })
                 }
                 className="text-sm text-blue-600 hover:text-blue-800 font-medium"
               >
                 + Add image
+              </button>
+            </div>
+
+
+            {/* Links */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Links
+              </label>
+              {(form.links || []).map((link, i) => (
+                <div key={i} className="flex gap-2 mb-2">
+                  <input
+                    value={link.label}
+                    onChange={(e) => {
+                      const links = [...(form.links || [])];
+                      links[i] = { ...links[i], label: e.target.value };
+                      setForm({ ...form, links });
+                    }}
+                    placeholder="Label"
+                    className="flex-1 px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <input
+                    value={link.url}
+                    onChange={(e) => {
+                      const links = [...(form.links || [])];
+                      links[i] = { ...links[i], url: e.target.value };
+                      setForm({ ...form, links });
+                    }}
+                    placeholder="https://..."
+                    className="flex-[2] px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    onClick={() =>
+                      setForm({
+                        ...form,
+                        links: (form.links || []).filter((_, j) => j !== i),
+                      })
+                    }
+                    className="p-2 text-red-400 hover:text-red-600"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ))}
+              <button
+                onClick={() =>
+                  setForm({
+                    ...form,
+                    links: [...(form.links || []), { label: "", url: "" }],
+                  })
+                }
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                + Add link
               </button>
             </div>
 
